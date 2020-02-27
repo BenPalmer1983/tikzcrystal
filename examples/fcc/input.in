@@ -1,0 +1,17 @@
+
+command name=tikzrun
+
+space a=8 b=8 c=8 alpha=90 beta=90 gamma=90 colour=#336699,#333333,#111111 gx=1 gy=1 gz=1 background=colour zdepth=1.0 zscale=0.8
+
+
+#line xa=0 xb=1.0 ya=0 yb=1.0 za=0 zb=1 colour=#000066
+#line xa=0 xb=1.0 ya=0 yb=1.0 za=0 zb=1 colour=#000066 type=dashed
+
+#ball x=0 y=0 z=0 colour=#990000 r=0.8 spacetransform=true
+#ball x=1.0 y=1.0 z=1.0 colour=#990000 r=0.8 spacetransform=true
+#ball x=1 y=1 z=1.0 colour=#000099 r=0.8 spacetransform=true
+
+crystal type=bcc x=0 y=0 z=0 cx=2 cy=2 cz=2 a=1.0 b=1.0 c=1.0 alpha=90 beta=90 gamma=90 colour=#333333,#555555,#666666,#777777 r=0.35 lines_vertex="very thick","solid" lines_subcells="thin","dashed" lines_diag="very thin","dashed",0.3
+
+tikzcommands cmd_name=printtikzcrystal
+
