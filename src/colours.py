@@ -1,3 +1,9 @@
+######################################################
+#  Ben Palmer University of Birmingham 2020
+#  Free to use
+######################################################
+
+
 import numpy
 
 class colours:

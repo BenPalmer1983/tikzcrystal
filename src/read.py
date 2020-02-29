@@ -1,3 +1,7 @@
+######################################################
+#  Ben Palmer University of Birmingham 2020
+#  Free to use
+######################################################
 
 class read:
   
@@ -30,10 +34,27 @@ class read:
       f = field.split("=")
       if(len(f) == 2):
         fb = read.split_by(f[1], ',')
-        if(len(fb) == 1):
-          dict[f[0].lower()] = [f[1]]
-        elif(len(fb) > 1):
-          dict[f[0].lower()] = fb
+        fkey = f[0].lower()
+        
+        
+        if(fkey in dict.keys()):
+          if(dict[fkey][0] != fkey):
+            temp = dict[fkey]
+            dict[fkey] = [fkey, temp]
+            if(len(fb) == 1):
+              dict[fkey].append([f[1]])
+            elif(len(fb) > 1):
+              dict[fkey].append(fb)
+          else:       
+            if(len(fb) == 1):
+              dict[fkey].append([f[1]])
+            elif(len(fb) > 1):
+              dict[fkey].append(fb)
+        else:  
+          if(len(fb) == 1):
+            dict[fkey] = [f[1]]
+          elif(len(fb) > 1):
+            dict[fkey] = fb
     
     return fields[0], dict
           

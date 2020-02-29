@@ -1,3 +1,8 @@
+######################################################
+#  Ben Palmer University of Birmingham 2020
+#  Free to use
+######################################################
+
 import numpy
 import os
 import sys
@@ -5,17 +10,20 @@ import operator
 from read import read
 from colours import colours
 from crystal import crystal
+from grid import grid
 
 class tikzcrystal:
 
   def __init__(self):
+    self.build = True
     self.latex = ''
     self.latex_colour = ''
     self.latex_background = ''
     self.latex_content = ''
     self.data = []
     self.colours_set = []
-    self.space = {'a':5, 'b':5, 'c':5, 'alpha':90, 'beta':90, 'gamma':90, 'gx': 4, 'gy': 4, 'gz': 4, 'zdepth': 1.0, 'zscale': 0.8,}
+    self.space = {'a':5, 'b':5, 'c':5, 'alpha':90, 'beta':90, 'gamma':90, 'gx': 4, 'gy': 4, 'gz': 4, 'zdepth': 1.0, 'zscale': 0.8, 'rx': 0, 'ry': 0, 'rz': 0}
+    self.grid = [] 
     self.zballscale = 0.5
     self.cmd_name = 'printtikzcrystal'
     self.cmd_prefix = ''
@@ -39,7 +47,71 @@ class tikzcrystal:
       self.space['background'] = self.data['space'][0]['background'][0]
       self.space['zdepth'] = float(self.data['space'][0]['zdepth'][0])
       self.space['zscale'] = float(self.data['space'][0]['zscale'][0])
+      
+      if('rotate' in self.data['space'][0].keys()):
+        self.space['rx'] = float(self.data['space'][0]['rotate'][0]) / 57.295779513
+        self.space['ry'] = float(self.data['space'][0]['rotate'][1]) / 57.295779513
+        self.space['rz'] = float(self.data['space'][0]['rotate'][2]) / 57.295779513
+   
+    # Grid
+    if('grid' in self.data.keys() and len(self.data['grid']) >= 1):
+      for g in self.data['grid']:
+        new_grid = grid.default()
+     
+        new_grid['make'] = True
+        if('cx' in g.keys()):
+          new_grid['cx'] = int(g['cx'][0])
+        if('cy' in g.keys()):
+          new_grid['cy'] = int(g['cy'][0])
+        if('cz' in g.keys()):
+          new_grid['cz'] = int(g['cz'][0])
+        if('alpha' in g.keys()):
+          new_grid['alpha'] = float(g['alpha'][0]) / 57.295779513
+        if('beta' in g.keys()):
+          new_grid['beta'] = float(g['beta'][0]) / 57.295779513
+        if('gamma' in g.keys()):
+          new_grid['gamma'] = float(g['gamma'][0]) / 57.295779513
+        if('a' in g.keys()):
+          new_grid['a'] = float(g['a'][0])
+        if('b' in g.keys()):
+          new_grid['b'] = float(g['b'][0])
+        if('c' in g.keys()):
+          new_grid['c'] = float(g['c'][0])
+        if('gridtype' in g.keys()):
+          new_grid['gridtype'] = g['gridtype'][0]
+        
+        if('lines' in g.keys()):
+          new_grid['lines'] = line.read_details(g['lines'])
+        else:        
+          new_grid['lines'] = line.read_details('')
+          
+        
+        self.grid.append(new_grid)
 
+      
+      """
+      self.grid['make'] = True
+      if('cx' in self.data['grid'][0].keys()):
+        self.grid['cx'] = int(self.data['grid'][0]['cx'][0])
+      if('cy' in self.data['grid'][0].keys()):
+        self.grid['cy'] = int(self.data['grid'][0]['cy'][0])
+      if('cz' in self.data['grid'][0].keys()):
+        self.grid['cz'] = int(self.data['grid'][0]['cz'][0])
+      if('alpha' in self.data['grid'][0].keys()):
+        self.grid['alpha'] = float(self.data['grid'][0]['alpha'][0]) / 57.295779513
+      if('beta' in self.data['grid'][0].keys()):
+        self.grid['beta'] = float(self.data['grid'][0]['beta'][0]) / 57.295779513
+      if('gamma' in self.data['grid'][0].keys()):
+        self.grid['gamma'] = float(self.data['grid'][0]['gamma'][0]) / 57.295779513
+      if('a' in self.data['grid'][0].keys()):
+        self.grid['a'] = float(self.data['grid'][0]['a'][0])
+      if('b' in self.data['grid'][0].keys()):
+        self.grid['b'] = float(self.data['grid'][0]['b'][0])
+      if('c' in self.data['grid'][0].keys()):
+        self.grid['c'] = float(self.data['grid'][0]['c'][0])
+      """  
+          
+    
     # Command Name
     if('tikzcommands' in self.data.keys() and len(self.data['tikzcommands']) == 1):
       self.cmd_name = self.data['tikzcommands'][0]['cmd_name'][0]
@@ -49,13 +121,14 @@ class tikzcrystal:
       if('tex_prefix' in self.data['tikzcommands'][0].keys() and len(self.data['tikzcommands'][0]['tex_prefix']) == 1):
         self.cmd_prefix = self.data['tikzcommands'][0]['tex_prefix'][0]
 
-
     
     # Background 
     self.background()
 
     # Make Crystal
     self.make_crystal()
+    
+    self.make_grid()
     
     # Sort out colours
     self.colours()
@@ -393,8 +466,9 @@ class tikzcrystal:
     fh.close()
     
     # Run Latex
-    cmd = "pdflatex out.tex"
-    os.system(cmd)
+    if(self.build):
+      cmd = "pdflatex out.tex"
+      os.system(cmd)
 
 
   def make_crystal(self):
@@ -406,6 +480,13 @@ class tikzcrystal:
         for line in cmd:
           self.data = read.read_line(self.data, line)
           
+          
+  def make_grid(self):
+    cmd = grid.make(self.grid)
+    if(len(cmd)>0):
+      for line in cmd:
+        self.data = read.read_line(self.data, line)
+    
           
     
   def make_axis(self):
@@ -558,12 +639,19 @@ class tikzcrystal:
     a = self.space['a']
     b = self.space['b']
     c = self.space['c']
+    
+    rx = self.space['rx']
+    ry = self.space['ry']
+    rz = self.space['rz']
   
     alpha = self.space['alpha']
     beta = self.space['beta']
     gamma = self.space['gamma']
   
-    return self.transform(x, y, z, a, b, c, alpha, beta, gamma, round_p)
+    x, y, z = self.transform(x, y, z, a, b, c, alpha, beta, gamma, round_p)    
+    x, y, z = self.rotate(x, y, z, rx, ry, rz)
+  
+    return x, y, z
 
 
   def transform(self, x, y, z, a, b, c, alpha, beta, gamma, round_p = 8):
@@ -593,8 +681,67 @@ class tikzcrystal:
 
     return round(yvec[0], round_p), round(yvec[1], round_p), round(yvec[2], round_p)
     
+    
+  def rotate(self, x, y, z, rx, ry, rz, round_p = 8):
+    """
+    rx_mat = numpy.zeros((3,3,),)
+    rx_mat[0,0] = 1
+    rx_mat[0,1] = 0
+    rx_mat[0,2] = 0
+    rx_mat[1,0] = 0
+    rx_mat[1,1] = numpy.cos(rx)
+    rx_mat[1,2] = -numpy.sin(rx)
+    rx_mat[2,0] = 0
+    rx_mat[2,1] = numpy.sin(rx)
+    rx_mat[2,2] = numpy.cos(rx)
+    
+    ry_mat = numpy.zeros((3,3,),)
+    ry_mat[0,0] = numpy.cos(ry)
+    ry_mat[0,1] = 0
+    ry_mat[0,2] = numpy.sin(ry)
+    ry_mat[1,0] = 0
+    ry_mat[1,1] = 1
+    ry_mat[1,2] = 0
+    ry_mat[2,0] = -numpy.sin(rx)
+    ry_mat[2,1] = 0
+    ry_mat[2,2] = numpy.cos(rx)
+    
+    rz_mat = numpy.zeros((3,3,),)
+    rz_mat[0,0] = numpy.cos(rz)
+    rz_mat[0,1] = -numpy.sin(ry)
+    rz_mat[0,2] = 0
+    rz_mat[1,0] = numpy.sin(rx)
+    rz_mat[1,1] = numpy.cos(rx)
+    rz_mat[1,2] = 0
+    rz_mat[2,0] = 0
+    rz_mat[2,1] = 0
+    rz_mat[2,2] = 1
+    
+    m = numpy.matmul(rz_mat, ry_mat)
+    m = numpy.matmul(m, rx_mat)
+    """
+    
+    m = numpy.zeros((3,3,),)
+    m[0,0] = numpy.cos(rz) * numpy.cos(ry)
+    m[0,1] = numpy.cos(rz) * numpy.sin(ry) * numpy.sin(rx) - numpy.sin(rz) * numpy.cos(rx)
+    m[0,2] = numpy.cos(rz) * numpy.sin(ry) * numpy.cos(rx) + numpy.sin(rz) * numpy.sin(rx)
+    m[1,0] = numpy.sin(rz) * numpy.cos(ry) 
+    m[1,1] = numpy.sin(rz) * numpy.sin(ry) + numpy.cos(rz) * numpy.cos(rx)
+    m[1,2] = numpy.sin(rz) * numpy.sin(ry) * numpy.cos(rx) - numpy.cos(rz) * numpy.sin(rx)
+    m[2,0] = -numpy.sin(ry)
+    m[2,1] = numpy.cos(ry) * numpy.sin(rx)
+    m[2,2] = numpy.cos(ry) * numpy.cos(rx)    
+    
+    a = numpy.zeros((3,),)
+    a[0] = x
+    a[1] = y
+    a[2] = z
+    
+    b = numpy.matmul(m, a)
+    
+    return round(b[0], round_p), round(b[1], round_p), round(b[2], round_p)
+    
   
   def latex_coord(self, x, y, z):  
     return '(' + str(round(x,5)) + ',' + str(round(y,5)) + ',' + str(round(z,5)) + ')'
-
 

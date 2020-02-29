@@ -1,10 +1,18 @@
+######################################################
+#  Ben Palmer University of Birmingham 2020
+#  Free to use
+######################################################
 
 import numpy
+from pwscf_output import pwscf_output
+from file_type import file_type
+from line import line
 
 class crystal:
 
   @staticmethod
   def make(crys_in):
+    cmd_lines = []
     
     # defaults
     crys = { 
@@ -23,15 +31,28 @@ class crystal:
             'gamma': [90.0],
             'colour': ['#000000'],
             'r': 1,
-            'lines_vertex': ['none','solid'],
-            'lines_subcells': ['none','solid'],
-            'lines_diag': ['none','solid'],
+            'lines_vertex': ['#000000','none','solid'],
+            'lines_subcells': ['#000000','none','solid'],
+            'lines_diag': ['#000000','none','solid'],
+            'v': [],
+            'i': [],
+            'iline': [],
+            'ilines': [],
+            'vacancy': [],
+            'interstitial': [],
+            'interstitial_xyz': [],
+            'file': None,
+            'file_xyz': None,
            } 
-    
+           
     for k in crys.keys(): 
       if(k in crys_in.keys()):
         crys[k] = crys_in[k]
+        
     
+    # Is the crystal in a file?
+    crys = crystal.read_file(crys)    
+        
     # Type
     ctype = crys['type'][0]
     
@@ -44,11 +65,12 @@ class crystal:
     a = float(crys['a'][0])
     b = float(crys['b'][0])
     c = float(crys['c'][0])
-    
+        
     # Side angles
     alpha = numpy.deg2rad(float(crys['alpha'][0]))
     beta = numpy.deg2rad(float(crys['beta'][0]))
     gamma = numpy.deg2rad(float(crys['gamma'][0]))
+    
     
     # Crystal copies
     cx = int(crys['cx'][0])
@@ -56,45 +78,205 @@ class crystal:
     cz = int(crys['cz'][0])
     
     # Radius
-    r = crys['r'][0]
-    
+    r = crys['r'][0]    
     
     # Colour
-    colour = crys['colour']    
+    colour = crys['colour']   
     
-    
+    # Read Vacancies
+    if(len(crys['v']) >= 3):
+      if(crys['v'][0] == 'v'):
+        for v in crys['v']:
+          if(len(v) >= 3):
+            crys['vacancy'].append(v)
+      else:
+        v = crys['v']
+        if(len(v) >= 3):
+          crys['vacancy'].append(v)
+          
+    # Interstitials
+    if(len(crys['i']) >= 3):
+      if(crys['i'][0] == 'i'):
+        for interstitial_t in crys['i']:
+          if(len(interstitial_t) >= 3):
+            try:
+              interstitial = [[None],[None],[None],[],[],[]]  # x y z colour lines/nolines key
+              if(len(interstitial_t)>=3):
+                interstitial[0] = float(interstitial_t[0])
+                interstitial[1] = float(interstitial_t[1])
+                interstitial[2] = float(interstitial_t[2])
+              if(len(interstitial_t)>=4):
+                interstitial[3] = str(interstitial_t[3])
+              else:
+                interstitial[3] = '#666666'
+              if(len(interstitial_t)>=5):
+                interstitial[4] = str(interstitial_t[4]).lower()
+              else:
+                interstitial[4] = 'nolines'
+              if(len(interstitial_t)>=6):
+                interstitial[5] = str(interstitial_t[5]).lower()
+                if(interstitial[5] == 0 or interstitial[5] == 'none'):
+                  interstitial[5] = None
+              else:
+                interstitial[5] = None
+              crys['interstitial'].append(interstitial)    
+            except:
+              pass
+      else:
+        interstitial_t = crys['i']
+        if(len(interstitial_t) >= 3):
+          try:
+            interstitial = [[],[],[],[],[],[]]  # x y z colour lines/nolines key
+            if(len(interstitial_t)>=3):
+              interstitial[0] = float(interstitial_t[0])
+              interstitial[1] = float(interstitial_t[1])
+              interstitial[2] = float(interstitial_t[2])              
+            if(len(interstitial_t)>=4):
+              interstitial[3] = str(interstitial_t[3])
+            else:
+              interstitial[3] = '#666666'
+            if(len(interstitial_t)>=5):
+              interstitial[4] = str(interstitial_t[4]).lower()
+            else:
+              interstitial[4] = 'nolines'
+            if(len(interstitial_t)>=6):
+              interstitial[5] = str(interstitial_t[5]).lower()
+              if(interstitial[5] == 0 or interstitial[5] == 'none'):
+                interstitial[5] = None
+            else:
+              interstitial[5] = None
+            crys['interstitial'].append(interstitial)    
+          except:
+            pass      
+            
+    # Interstitial Lines
+    if(len(crys['iline']) >= 2):  
+      if(crys['iline'][0] == 'iline'):
+        for iline_t in crys['iline'][1:]:
+          if(len(iline_t) >= 2 and iline_t[0] != 'iline'):
+            try:
+              iline = [[None],[None],[],[],[]]   # key1 key2 colour weight type 
+              if(len(iline_t)>=2):
+                iline[0] = iline_t[0]
+                iline[1] = iline_t[1]
+              if(len(iline_t)>=3):
+                iline[2] = str(iline_t[2])
+              else:
+                iline[2] = '#666666'
+              if(len(iline_t)>=4):
+                iline[3] = str(iline_t[3])
+              else:
+                iline[3] = 'thin'
+              if(len(iline_t)>=5):
+                iline[4] = str(iline_t[4])
+              else:
+                iline[4] = 'solid'
+              crys['ilines'].append(iline)    
+            except:
+              pass
+      else:
+        iline_t = crys['iline']
+        if(len(iline_t) >= 2):
+          try:
+            iline = [[],[],[],[],[]]   # key1 key2 colour weight type 
+            if(len(iline_t)>=2):
+              iline[0] = iline_t[0]
+              iline[1] = iline_t[1]         
+            if(len(iline_t)>=3):
+              iline[2] = str(iline_t[2])
+            else:
+              iline[2] = '#666666'
+            if(len(iline_t)>=4):
+              iline[3] = str(iline_t[3])
+            else:
+              iline[3] = 'thin'
+            if(len(iline_t)>=5):
+              iline[4] = str(iline_t[4])
+            else:
+              iline[4] = 'solid'
+            crys['ilines'].append(iline)    
+          except:
+            pass    
+
+    # Make Crystal
     if(ctype == "sc"):
-      atoms = crystal.make_sc(cx, cy, cz)
+      atoms_t = crystal.make_sc(cx, cy, cz)
     elif(ctype == "bcc"):
-      atoms = crystal.make_bcc(cx, cy, cz)
+      atoms_t = crystal.make_bcc(cx, cy, cz)
     elif(ctype == "fcc"):
-      atoms = crystal.make_fcc(cx, cy, cz)
+      atoms_t = crystal.make_fcc(cx, cy, cz)
     elif(ctype == "ec"):
-      atoms = crystal.make_ec(cx, cy, cz)
+      atoms_t = crystal.make_ec(cx, cy, cz)
     elif(ctype == "zb"):
-      atoms = crystal.make_zb(cx, cy, cz)
+      atoms_t = crystal.make_zb(cx, cy, cz)
+    elif(ctype == "file"):
+      atoms_t = crys['file_atoms_expanded']
+    else:
+      return cmd_lines
       
+    # Make atoms and atoms_xyz lists
+    atoms = []  
     atoms_xyz = []  
-    for i in range(len(atoms)):
-      x, y, z = crystal.ctransform(atoms[i][0], atoms[i][1], atoms[i][2], a, b, c, alpha, beta, gamma)
-      atoms_xyz.append([x,y,z])
-      
+    atoms_colours = []  
+    interstitial_xyz = []
+    for i in range(len(atoms_t)):
+      x, y, z = crystal.ctransform(atoms_t[i][0], atoms_t[i][1], atoms_t[i][2], a, b, c, alpha, beta, gamma)     
+      this_colour = colour[i % len(colour)]
+      # Check for vacancies
+      vacancy = False
+      for v in crys['vacancy']:
+        if(abs(x - float(v[0])) <= 1.0e-5 and abs(y - float(v[1])) <= 1.0e-5 and abs(z - float(v[2])) <= 1.0e-5):
+          vacancy = True  
+      if(vacancy == False):
+        atoms.append(atoms_t[i])      
+        atoms_xyz.append([x,y,z])
+        atoms_colours.append(this_colour)
+        
+    # Line Interstitials (these may have grid lines drawn to them)
+    for i in crys['interstitial']:
+      if(i[4].lower() == "lines"):
+        x, y, z = crystal.ctransform(i[0], i[1], i[2], a, b, c, alpha, beta, gamma)   
+        atoms.append([i[0], i[1], i[2]])    
+        atoms_xyz.append([x,y,z])
+        atoms_colours.append(i[3])
+        try:
+          interstitial_xyz.append([i[5],x,y,z])
+        except:
+          interstitial_xyz.append([None,x,y,z])
+        
+        
     min_r, max_r = crystal.neighbour_list(atoms_xyz) 
     if(r == 'auto'):
       r = 0.45 * min_r
-    print(min_r, max_r, r)
       
     # Spheres
-    cmd_lines = []
     for i in range(len(atoms)):
-      #x, y, z = crystal.ctransform(atoms[i][0], atoms[i][1], atoms[i][2], a, b, c, alpha, beta, gamma)
       x, y, z = atoms_xyz[i][0], atoms_xyz[i][1], atoms_xyz[i][2]
-      sphere_line = 'ball x=' + str(x) + ' y=' + str(y) + ' z=' + str(z) + ' r=' + str(r) + ' colour=' + colour[i % len(colour)]
+      sphere_line = 'ball x=' + str(x) + ' y=' + str(y) + ' z=' + str(z) + ' r=' + str(r) + ' colour=' + atoms_colours[i]
       cmd_lines.append(sphere_line)  
+      
+    # Non Line Interstitials (these don't have grid lines drawn to them) 
+    for i in crys['interstitial']:
+      if(i[4].lower() != "lines"):
+        x, y, z = crystal.ctransform(i[0], i[1], i[2], a, b, c, alpha, beta, gamma)   
+        sphere_line = 'ball x=' + str(x) + ' y=' + str(y) + ' z=' + str(z) + ' r=' + str(r) + ' colour=' + i[3]
+        cmd_lines.append(sphere_line)                 
+        try:
+          interstitial_xyz.append([i[5],x,y,z])
+        except:
+          interstitial_xyz.append([None,x,y,z])
+        
+    # Store
+    crys['interstitial_xyz'] = interstitial_xyz
       
     # Lines
     join_lines = crystal.make_lines(crys, atoms, atoms_xyz, cx, cy, cz, a, b, c)
     cmd_lines = cmd_lines + join_lines
+    
+    # Interstitial lines
+    join_lines = crystal.make_interstitial_lines(crys, cx, cy, cz, a, b, c)
+    cmd_lines = cmd_lines + join_lines
+    
       
     return cmd_lines
 
@@ -179,15 +361,16 @@ class crystal:
 
   def make_lines(crys, atoms, atoms_xyz, cx, cy, cz, a, b, c):
    
-    vertex_large_on, vertex_large_weight, vertex_large_type, vertex_large_f = crystal.line_details(crys['lines_vertex'])
-    vertex_small_on, vertex_small_weight, vertex_small_type, vertex_small_f = crystal.line_details(crys['lines_subcells'])
-    diag_on, diag_weight, diag_type, diag_f = crystal.line_details(crys['lines_diag'])
+    vertex_large_on, vertex_large_colour, vertex_large_weight, vertex_large_type, vertex_large_f = crystal.line_details(crys['lines_vertex'])
+    vertex_small_on, vertex_small_colour, vertex_small_weight, vertex_small_type, vertex_small_f = crystal.line_details(crys['lines_subcells'])
+    diag_on, diag_colour, diag_weight, diag_type, diag_f = crystal.line_details(crys['lines_diag'])
   
     cmd_lines = []
   
     cell_diag = numpy.sqrt((a/cx)**2 + (b/cy)**2 + (c/cz)**2)
   
     nl = []
+    nl_min = []
     nl_close = []
     nl_ortho = []
     nl_vertex_small = []
@@ -205,6 +388,17 @@ class crystal:
           r = numpy.sqrt(rsq)      
           nl.append([r, atoms[i], atoms[j], atoms_xyz[i], atoms_xyz[j]])
           
+    # Neighbours 
+    for i in range(len(atoms)):
+      nl_min.append(None)
+      for j in range(len(atoms)):     
+        if(i != j):
+          rsq = (atoms[i][0] - atoms[j][0])**2 + (atoms[i][1] - atoms[j][1])**2 + (atoms[i][2] - atoms[j][2])**2
+          if(rsq > 0.0 and rsq <= rcut_sq):
+            r = numpy.sqrt(rsq)  
+            if((nl_min[i] == None) or (r <nl_min[i])):
+              nl_min[i] = r
+
     # Nearby Neighbours
     for i in range(len(nl)):
       if(nl[i][0] <= 1.05 * cell_diag):
@@ -248,19 +442,46 @@ class crystal:
         nl_diagonal_short.append(nl_close[i])
     
     if(vertex_large_on):
-      cmd_lines = crystal.add_lines(cmd_lines, nl_vertex_large, vertex_large_type, vertex_large_weight)
+      cmd_lines = crystal.add_lines(cmd_lines, nl_vertex_large, vertex_large_type, vertex_large_weight, vertex_large_colour)
     if(vertex_small_on):
-      cmd_lines = crystal.add_lines(cmd_lines, nl_vertex_small_inner, vertex_small_type, vertex_small_weight)
+      cmd_lines = crystal.add_lines(cmd_lines, nl_vertex_small_inner, vertex_small_type, vertex_small_weight, vertex_small_colour)
     if(diag_on):
-      cmd_lines = crystal.add_lines(cmd_lines, nl_diagonal_short, diag_type, diag_weight)
-
-    
-    
+      cmd_lines = crystal.add_lines(cmd_lines, nl_diagonal_short, diag_type, diag_weight, diag_colour)
     
     return cmd_lines
     
     
     
+  def make_interstitial_lines(crys, cx, cy, cz, a, b, c):
+    cmd_lines = []
+    lines = []
+    for il in crys['ilines']:
+      la = il[0]
+      lb = il[1]
+      colour = il[2]
+      weight = il[3]
+      type = il[4]
+      
+      for i in range(len(crys['interstitial_xyz'])):
+        if(crys['interstitial_xyz'][i][0] == la):
+          for j in range(len(crys['interstitial_xyz'])):
+            if(crys['interstitial_xyz'][j][0] == lb):
+              xa = crys['interstitial_xyz'][i][1]
+              ya = crys['interstitial_xyz'][i][2]
+              za = crys['interstitial_xyz'][i][3]
+              xb = crys['interstitial_xyz'][j][1]
+              yb = crys['interstitial_xyz'][j][2]
+              zb = crys['interstitial_xyz'][j][3]
+              if([xa,ya,za,xb,yb,zb] in lines or [xb,yb,zb,xa,ya,za] in lines):
+                pass
+              else:
+                lines.append([xa,ya,za,xb,yb,zb])
+                cmd_lines = crystal.add_lines_i(cmd_lines, [xa,ya,za], [xb,yb,zb], type, weight, colour)
+     
+
+    return cmd_lines
+    
+ 
     
     
   def ortho(xyz_a, xyz_b):
@@ -310,7 +531,7 @@ class crystal:
     return is_vertex    
         
     
-  def add_lines(cmd_lines, pairs, type, weight):
+  def add_lines(cmd_lines, pairs, type, weight, colour='#000022'):
     for pair in pairs:
       xa = str(pair[3][0])
       ya = str(pair[3][1])
@@ -318,12 +539,20 @@ class crystal:
       xb = str(pair[4][0])
       yb = str(pair[4][1])
       zb = str(pair[4][2])
-      join_line = 'line xa=' + str(xa) + ' xb=' + str(xb) + ' ya=' + str(ya) + ' yb=' + str(yb) + ' za=' + str(za) + ' zb=' + str(zb) + ' colour=#000022 type=' + type + ' line_weight="' + weight + '"'
-      cmd_lines.append(join_line) 
-   
+      join_line = 'line xa=' + str(xa) + ' xb=' + str(xb) + ' ya=' + str(ya) + ' yb=' + str(yb) + ' za=' + str(za) + ' zb=' + str(zb) + ' colour='+colour+' type=' + type + ' line_weight="' + weight + '"'
+      cmd_lines.append(join_line)    
     return cmd_lines
     
-    
+  def add_lines_i(cmd_lines, a, b, type, weight, colour='#000022'):
+    xa = str(a[0])
+    ya = str(a[1])
+    za = str(a[2])
+    xb = str(b[0])
+    yb = str(b[1])
+    zb = str(b[2])
+    join_line = 'line xa=' + str(xa) + ' xb=' + str(xb) + ' ya=' + str(ya) + ' yb=' + str(yb) + ' za=' + str(za) + ' zb=' + str(zb) + ' colour='+colour+' type=' + type + ' line_weight="' + weight + '"'
+    cmd_lines.append(join_line)    
+    return cmd_lines  
     
   def line_details(details):
     ds = []
@@ -332,11 +561,13 @@ class crystal:
       
     if('none' in ds):
       on = False
+      colour = '#FFFFFF' 
       weight = ''
       type = ''
       f = 0.5
     else:
       on = True
+      colour = '#000000' 
       weight = 'thin'
       type = 'solid'
       f = 0.5
@@ -357,14 +588,61 @@ class crystal:
       elif('dotted' in ds):
         type = 'dotted' 
       for d in ds:
+        if(len(d) == 7 and d[0] == '#'):
+          colour = d[0:7] 
+      for d in ds:
         try:
           f = float(d)
           break
         except:
           pass
-        
-    return on, weight, type, f
-        
+    return on, colour, weight, type, f
+  
+  
+  def read_file(crys):
+    if('file' not in crys.keys()):
+      return crys
+    if(crys['file'] == None):
+      return crys
+    
+    ft = file_type.check(crys['file'][0])
+    
+    if(ft == 'qe'):
+      pw = pwscf_output(crys['file'][0])
+      
+      crys['type'][0] = 'file'
+      crys['file_xyz'] = pw.get_crystal_positions()
+      crys['file_xyz'] = crys['file_xyz'] % 1.0
+      
+      crys['a'][0] = 1.0
+      crys['b'][0] = 1.0
+      crys['c'][0] = 1.0
+      crys['alpha'][0] = 90.0
+      crys['beta'][0] = 90.0
+      crys['gamma'][0] = 90.0
+      
+      
+      crys['file_atoms'] = []
+      for i in range(len(crys['file_xyz'])):
+        crys['file_atoms'].append([crys['file_xyz'][i,0],crys['file_xyz'][i,1],crys['file_xyz'][i,2]])
+      
+      
+      crys['file_atoms_expanded'] = crystal.expand(crys['file_atoms'], int(crys['cx'][0]), int(crys['cy'][0]), int(crys['cz'][0]))
+      
+      for i in range(len(crys['file_atoms_expanded'])):
+        print((i+1),crys['file_atoms_expanded'][i][:])
+      #unit = [[0,0,0],[0.5,0.5,0.0],[0.5,0.0,0.5],[0.0,0.5,0.5]]
+      #return crystal.expand(unit, cx, cy, cz)
+  
+  
+    return crys
+  
+  
+  
+  
+  
+  
+  
     
     
     

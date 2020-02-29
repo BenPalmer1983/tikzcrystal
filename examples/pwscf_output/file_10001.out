@@ -1,0 +1,285 @@
+
+     Program PWSCF v.6.3 starts on 25Feb2020 at  1:44:20 
+
+     This program is part of the open-source Quantum ESPRESSO suite
+     for quantum simulation of materials; please cite
+         "P. Giannozzi et al., J. Phys.:Condens. Matter 21 395502 (2009);
+         "P. Giannozzi et al., J. Phys.:Condens. Matter 29 465901 (2017);
+          URL http://www.quantum-espresso.org", 
+     in publications or presentations arising from this work. More details at
+     http://www.quantum-espresso.org/quote
+
+     Parallel version (MPI & OpenMP), running on      20 processor cores
+     Number of MPI processes:                20
+     Threads/MPI process:                     1
+
+     MPI processes distributed on     1 nodes
+     R & G space division:  proc/nbgrp/npool/nimage =      20
+     Reading input from /rds/homes/b/bxp912/jobs/20200224_al_conv/wd/runpwscf/file_10001.in
+Warning: card &IONS ignored
+Warning: card ION_DYNAMICS = 'BFGS', ignored
+Warning: card / ignored
+Warning: card &CELL ignored
+Warning: card CELL_DYNAMICS = 'BFGS', ignored
+Warning: card CELL_FACTOR = 2.0, ignored
+Warning: card PRESS = 0.0, ignored
+Warning: card / ignored
+
+     Current dimensions of program PWSCF are:
+     Max number of different atomic species (ntypx) = 10
+     Max number of k-points (npk) =  40000
+     Max angular momentum in pseudopotentials (lmaxx) =  3
+     Message from routine read_upf::
+     Pseudo file /rds/homes/b/bxp912/pp/Al.pbe-nl-kjpaw_psl.1.0.0.UPF has been successfully fixed on the fly.
+To avoid this message in the future you can permanently fix 
+ your pseudo files following instructions given in: 
+https://gitlab.com/QEF/q-e/blob/master/upftools/how_to_fix_upf.md
+               file Al.pbe-nl-kjpaw_psl.1.0.0.UPF: wavefunction(s)  3S 3P renormalized
+
+     Subspace diagonalization in iterative solution of the eigenvalue problem:
+     a serial algorithm will be used
+
+ 
+     Parallelization info
+     --------------------
+     sticks:   dense  smooth     PW     G-vecs:    dense   smooth      PW
+     Min          93      93     26                 3011     3011     458
+     Max          94      94     30                 3016     3016     460
+     Sum        1861    1861    529                60245    60245    9171
+ 
+
+
+     bravais-lattice index     =            0
+     lattice parameter (alat)  =      15.2712  a.u.
+     unit-cell volume          =    3561.3897 (a.u.)^3
+     number of atoms/cell      =           16
+     number of atomic types    =            1
+     number of electrons       =        48.00
+     number of Kohn-Sham states=           29
+     kinetic-energy cutoff     =      25.0000  Ry
+     charge density cutoff     =     100.0000  Ry
+     convergence threshold     =      1.0E-06
+     mixing beta               =       0.1000
+     number of iterations used =           10  TF        mixing
+     Exchange-correlation      = SLA PW PBX PBC ( 1  4  3  4 0 0)
+
+     celldm(1)=  15.271200  celldm(2)=   0.000000  celldm(3)=   0.000000
+     celldm(4)=   0.000000  celldm(5)=   0.000000  celldm(6)=   0.000000
+
+     crystal axes: (cart. coord. in units of alat)
+               a(1) = (   1.000000   0.000000   0.000000 )  
+               a(2) = (   0.000000   1.000000   0.000000 )  
+               a(3) = (   0.000000   0.000000   1.000000 )  
+
+     reciprocal axes: (cart. coord. in units 2 pi/alat)
+               b(1) = (  1.000000  0.000000  0.000000 )  
+               b(2) = (  0.000000  1.000000  0.000000 )  
+               b(3) = (  0.000000  0.000000  1.000000 )  
+
+
+     PseudoPot. # 1 for Al read from file:
+     /rds/homes/b/bxp912/pp/Al.pbe-nl-kjpaw_psl.1.0.0.UPF
+     MD5 check sum: 339dbea23cf3ab9a065ad45c0f9085d7
+     Pseudo is Projector augmented-wave + core cor, Zval =  3.0
+     Generated using "atomic" code by A. Dal Corso v.5.1
+     Shape of augmentation charge: PSQ
+     Using radial grid of 1135 points,  4 beta functions with: 
+                l(1) =   0
+                l(2) =   0
+                l(3) =   1
+                l(4) =   1
+     Q(r) pseudized with 0 coefficients 
+
+
+     atomic species   valence    mass     pseudopotential
+        Al             3.00    26.98200     Al( 1.00)
+
+     No symmetry found
+
+
+
+   Cartesian axes
+
+     site n.     atom                  positions (alat units)
+         1           Al  tau(   1) = (  -0.0000327   0.0000095   0.0000680  )
+         2           Al  tau(   2) = (   0.2500796   0.2498100   0.2500703  )
+         3           Al  tau(   3) = (  -0.0000929   0.0000305   0.5002955  )
+         4           Al  tau(   4) = (   0.2499800   0.2502187   0.7501837  )
+         5           Al  tau(   5) = (   0.0002558   0.5002521  -0.0001190  )
+         6           Al  tau(   6) = (   0.2501194   0.7498326   0.2500036  )
+         7           Al  tau(   7) = (   0.0000278   0.5001539   0.4998880  )
+         8           Al  tau(   8) = (   0.2500549   0.7501136   0.7502101  )
+         9           Al  tau(   9) = (   0.5002375   0.0001078  -0.0000154  )
+        10           Al  tau(  10) = (   0.7501396   0.2501762   0.2504054  )
+        11           Al  tau(  11) = (   0.5001891   0.0001088   0.5002510  )
+        12           Al  tau(  12) = (   0.7500383   0.2500455   0.7500253  )
+        13           Al  tau(  13) = (   0.5001102   0.5001562   0.0000990  )
+        14           Al  tau(  14) = (   0.7499640   0.7500632   0.2498706  )
+        15           Al  tau(  15) = (   0.5003366   0.4997894   0.4996960  )
+        16           Al  tau(  16) = (   0.7496720   0.7497055   0.7499931  )
+
+     number of k points=    63  Marzari-Vanderbilt smearing, width (Ry)=  0.0200
+                       cart. coord. in units 2pi/alat
+        k(    1) = (   0.1000000   0.1000000   0.1000000), wk =   0.0320000
+        k(    2) = (   0.1000000   0.1000000   0.3000000), wk =   0.0320000
+        k(    3) = (   0.1000000   0.1000000  -0.5000000), wk =   0.0320000
+        k(    4) = (   0.1000000   0.3000000   0.3000000), wk =   0.0320000
+        k(    5) = (   0.1000000   0.3000000  -0.5000000), wk =   0.0320000
+        k(    6) = (   0.1000000  -0.5000000  -0.5000000), wk =   0.0320000
+        k(    7) = (   0.3000000   0.3000000   0.3000000), wk =   0.0320000
+        k(    8) = (   0.3000000   0.3000000  -0.5000000), wk =   0.0320000
+        k(    9) = (   0.3000000  -0.5000000  -0.5000000), wk =   0.0320000
+        k(   10) = (  -0.5000000  -0.5000000  -0.5000000), wk =   0.0160000
+        k(   11) = (  -0.1000000  -0.1000000   0.1000000), wk =   0.0320000
+        k(   12) = (  -0.1000000   0.1000000  -0.1000000), wk =   0.0320000
+        k(   13) = (   0.1000000  -0.1000000  -0.1000000), wk =   0.0320000
+        k(   14) = (  -0.1000000  -0.1000000   0.3000000), wk =   0.0320000
+        k(   15) = (  -0.1000000   0.1000000  -0.3000000), wk =   0.0320000
+        k(   16) = (   0.1000000  -0.1000000  -0.3000000), wk =   0.0320000
+        k(   17) = (   0.3000000  -0.1000000   0.1000000), wk =   0.0320000
+        k(   18) = (  -0.3000000  -0.1000000  -0.1000000), wk =   0.0320000
+        k(   19) = (   0.3000000   0.1000000  -0.1000000), wk =   0.0320000
+        k(   20) = (  -0.3000000   0.1000000   0.1000000), wk =   0.0320000
+        k(   21) = (  -0.1000000   0.3000000   0.1000000), wk =   0.0320000
+        k(   22) = (  -0.1000000  -0.3000000  -0.1000000), wk =   0.0320000
+        k(   23) = (   0.1000000   0.3000000  -0.1000000), wk =   0.0320000
+        k(   24) = (   0.1000000  -0.3000000   0.1000000), wk =   0.0320000
+        k(   25) = (  -0.1000000   0.1000000   0.5000000), wk =   0.0320000
+        k(   26) = (  -0.5000000  -0.1000000   0.1000000), wk =   0.0320000
+        k(   27) = (   0.5000000  -0.1000000  -0.1000000), wk =   0.0320000
+        k(   28) = (  -0.1000000  -0.5000000   0.1000000), wk =   0.0320000
+        k(   29) = (  -0.1000000   0.5000000  -0.1000000), wk =   0.0320000
+        k(   30) = (  -0.1000000  -0.3000000   0.3000000), wk =   0.0320000
+        k(   31) = (  -0.1000000   0.3000000  -0.3000000), wk =   0.0320000
+        k(   32) = (   0.1000000  -0.3000000  -0.3000000), wk =   0.0320000
+        k(   33) = (   0.3000000   0.1000000  -0.3000000), wk =   0.0320000
+        k(   34) = (  -0.3000000  -0.1000000  -0.3000000), wk =   0.0320000
+        k(   35) = (   0.3000000  -0.1000000   0.3000000), wk =   0.0320000
+        k(   36) = (  -0.3000000   0.1000000   0.3000000), wk =   0.0320000
+        k(   37) = (   0.3000000  -0.3000000   0.1000000), wk =   0.0320000
+        k(   38) = (  -0.3000000  -0.3000000  -0.1000000), wk =   0.0320000
+        k(   39) = (   0.3000000   0.3000000  -0.1000000), wk =   0.0320000
+        k(   40) = (  -0.3000000   0.3000000   0.1000000), wk =   0.0320000
+        k(   41) = (  -0.1000000   0.3000000   0.5000000), wk =   0.0320000
+        k(   42) = (   0.3000000   0.1000000   0.5000000), wk =   0.0320000
+        k(   43) = (   0.3000000  -0.1000000  -0.5000000), wk =   0.0320000
+        k(   44) = (  -0.5000000  -0.3000000   0.1000000), wk =   0.0320000
+        k(   45) = (   0.5000000  -0.3000000  -0.1000000), wk =   0.0320000
+        k(   46) = (  -0.1000000  -0.5000000   0.3000000), wk =   0.0320000
+        k(   47) = (  -0.1000000   0.5000000  -0.3000000), wk =   0.0320000
+        k(   48) = (   0.3000000  -0.5000000   0.1000000), wk =   0.0320000
+        k(   49) = (   0.3000000   0.5000000  -0.1000000), wk =   0.0320000
+        k(   50) = (  -0.5000000   0.1000000   0.3000000), wk =   0.0320000
+        k(   51) = (   0.5000000  -0.1000000   0.3000000), wk =   0.0320000
+        k(   52) = (  -0.5000000   0.1000000   0.5000000), wk =   0.0320000
+        k(   53) = (  -0.5000000   0.5000000   0.1000000), wk =   0.0320000
+        k(   54) = (  -0.3000000  -0.3000000   0.3000000), wk =   0.0320000
+        k(   55) = (  -0.3000000   0.3000000  -0.3000000), wk =   0.0320000
+        k(   56) = (   0.3000000  -0.3000000  -0.3000000), wk =   0.0320000
+        k(   57) = (  -0.3000000   0.3000000   0.5000000), wk =   0.0320000
+        k(   58) = (  -0.5000000  -0.3000000   0.3000000), wk =   0.0320000
+        k(   59) = (   0.5000000  -0.3000000  -0.3000000), wk =   0.0320000
+        k(   60) = (  -0.3000000  -0.5000000   0.3000000), wk =   0.0320000
+        k(   61) = (  -0.3000000   0.5000000  -0.3000000), wk =   0.0320000
+        k(   62) = (  -0.5000000   0.3000000   0.5000000), wk =   0.0320000
+        k(   63) = (  -0.5000000   0.5000000   0.3000000), wk =   0.0320000
+
+     Dense  grid:    60245 G-vectors     FFT dimensions: (  50,  50,  50)
+
+     Estimated max dynamical RAM per process >      17.99 MB
+
+     Estimated total dynamical RAM >     359.79 MB
+
+     Initial potential from superposition of free atoms
+
+     starting charge   47.96336, renormalised to   48.00000
+     Starting wfcs are   64 randomized atomic wfcs
+     Checking if some PAW data can be deallocated... 
+
+     total cpu time spent up to now is        3.2 secs
+
+     Self-consistent Calculation
+
+     iteration #  1     ecut=    25.00 Ry     beta= 0.10
+     Davidson diagonalization with overlap
+     ethr =  1.00E-02,  avg # of iterations =  2.0
+
+     Threshold (ethr) on eigenvalues was too large:
+     Diagonalizing with lowered threshold
+
+     Davidson diagonalization with overlap
+     ethr =  1.27E-04,  avg # of iterations =  3.6
+
+     total cpu time spent up to now is        8.8 secs
+
+     total energy              =    -630.85791270 Ry
+     Harris-Foulkes estimate   =    -630.86005706 Ry
+     estimated scf accuracy    <       0.06133295 Ry
+
+     iteration #  2     ecut=    25.00 Ry     beta= 0.10
+     Davidson diagonalization with overlap
+     ethr =  1.28E-04,  avg # of iterations =  1.0
+
+     total cpu time spent up to now is       10.6 secs
+
+     total energy              =    -630.84154251 Ry
+     Harris-Foulkes estimate   =    -630.85814980 Ry
+     estimated scf accuracy    <       0.05406504 Ry
+
+     iteration #  3     ecut=    25.00 Ry     beta= 0.10
+     Davidson diagonalization with overlap
+     ethr =  1.13E-04,  avg # of iterations =  1.0
+
+     total cpu time spent up to now is       12.5 secs
+
+     total energy              =    -630.84349860 Ry
+     Harris-Foulkes estimate   =    -630.84421389 Ry
+     estimated scf accuracy    <       0.00048759 Ry
+
+     iteration #  4     ecut=    25.00 Ry     beta= 0.10
+     Davidson diagonalization with overlap
+     ethr =  1.02E-06,  avg # of iterations =  4.1
+
+     total cpu time spent up to now is       16.3 secs
+
+     total energy              =    -630.84386441 Ry
+     Harris-Foulkes estimate   =    -630.84407570 Ry
+     estimated scf accuracy    <       0.00015563 Ry
+
+     iteration #  5     ecut=    25.00 Ry     beta= 0.10
+     Davidson diagonalization with overlap
+     ethr =  3.24E-07,  avg # of iterations =  1.0
+
+     total cpu time spent up to now is       18.1 secs
+
+     total energy              =    -630.84360419 Ry
+     Harris-Foulkes estimate   =    -630.84386878 Ry
+     estimated scf accuracy    <       0.00014893 Ry
+
+     iteration #  6     ecut=    25.00 Ry     beta= 0.10
+     Davidson diagonalization with overlap
+     ethr =  3.10E-07,  avg # of iterations =  2.5
+
+     total cpu time spent up to now is       20.7 secs
+
+     total energy              =    -630.84363854 Ry
+     Harris-Foulkes estimate   =    -630.84364377 Ry
+     estimated scf accuracy    <       0.00000432 Ry
+
+     iteration #  7     ecut=    25.00 Ry     beta= 0.10
+     Davidson diagonalization with overlap
+
+ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+     Error in routine cdiaghg (209):
+     S matrix not positive definite
+ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+     stopping ...
+--------------------------------------------------------------------------
+MPI_ABORT was invoked on rank 0 in communicator MPI_COMM_WORLD
+with errorcode 1.
+
+NOTE: invoking MPI_ABORT causes Open MPI to kill all MPI processes.
+You may or may not see output from other processes, depending on
+exactly when Open MPI kills them.
+--------------------------------------------------------------------------

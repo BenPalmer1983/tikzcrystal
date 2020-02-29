@@ -1,0 +1,131 @@
+\documentclass[11pt,twoside]{article}
+%% Tikz package
+\usepackage{tikz}
+\usepackage{tikz-dimline}
+\usetikzlibrary{shapes,arrows,3d}
+\usetikzlibrary{math}
+\pagestyle{plain}
+\definecolor{col_336699}{RGB}{51,102,153}
+\definecolor{col_333333}{RGB}{51,51,51}
+\definecolor{col_111111}{RGB}{17,17,17}
+\definecolor{col_555555}{RGB}{85,85,85}
+\definecolor{col_666666}{RGB}{102,102,102}
+\definecolor{col_777777}{RGB}{119,119,119}
+\definecolor{col_880000}{RGB}{136,0,0}
+\definecolor{col_008800}{RGB}{0,136,0}
+\definecolor{col_000088}{RGB}{0,0,136}
+\definecolor{col_008888}{RGB}{0,136,136}
+\definecolor{col_000000}{RGB}{0,0,0}
+\definecolor{col_ff0000}{RGB}{255,0,0}
+
+ 
+%% DRAW LINE
+\newcommand{\tikzdrawline}[7]{
+\draw[#1] (#2,#4,#3) -- (#5,#7,#6);  
+}
+%% DRAW BALL
+\newcommand{\tikzdrawatom}[5]{%
+\filldraw[ball color=#1] (#2,#3,#4) circle[radius=#5];
+}  
+\newcommand{\printtikzcrystal}[0]{
+\fill[col_336699!10,opacity=1.0] (0.0,0.0,0.0) -- (8.0,0.0,-0.0) -- (8.0,8.0,-0.0) -- (0.0,8.0,0.0) -- cycle;     %% bottom square
+\fill[col_336699!15,opacity=1.0] (0.0,0.0,0.0) -- (0.0,8.0,0.0) -- (-0.0,8.0,-8.0) -- (-0.0,0.0,-8.0) -- cycle;     %% bottom square
+\fill[col_336699!30,opacity=1.0] (0.0,0.0,0.0) -- (-0.0,0.0,-8.0) -- (8.0,0.0,-8.0) -- (8.0,0.0,-0.0) -- cycle;     %% bottom square
+\draw[solid, col_000000, very thick] (4.0,0.0,-0.0) -- (0.0,0.0,0.0); 
+\draw[solid, col_000000, very thick] (0.0,0.0,0.0) -- (0.0,4.0,0.0); 
+\draw[solid, col_000000, very thick] (0.0,0.0,0.0) -- (-0.0,0.0,-4.0); 
+\draw[solid, col_000000, very thick] (0.0,4.0,0.0) -- (0.0,8.0,0.0); 
+\draw[solid, col_000000, very thick] (4.0,8.0,-0.0) -- (0.0,8.0,0.0); 
+\draw[solid, col_000000, very thick] (0.0,8.0,0.0) -- (-0.0,8.0,-4.0); 
+\draw[solid, col_000000, very thick] (-0.0,0.0,-4.0) -- (-0.0,0.0,-8.0); 
+\draw[solid, col_000000, very thick] (-0.0,8.0,-4.0) -- (-0.0,8.0,-8.0); 
+\draw[solid, col_000000, very thick] (4.0,0.0,-8.0) -- (-0.0,0.0,-8.0); 
+\draw[solid, col_000000, very thick] (-0.0,0.0,-8.0) -- (-0.0,4.0,-8.0); 
+\draw[solid, col_000000, very thick] (-0.0,4.0,-8.0) -- (-0.0,8.0,-8.0); 
+\draw[solid, col_000000, very thick] (4.0,8.0,-8.0) -- (-0.0,8.0,-8.0); 
+\draw[dashed, col_ff0000, thin] (4.0,4.0,-0.0) -- (0.0,4.0,0.0); 
+\draw[dashed, col_ff0000, thin] (0.0,4.0,0.0) -- (-0.0,4.0,-4.0); 
+\draw[dashed, col_ff0000, thin] (4.0,0.0,-4.0) -- (-0.0,0.0,-4.0); 
+\draw[dashed, col_ff0000, thin] (-0.0,0.0,-4.0) -- (-0.0,4.0,-4.0); 
+\draw[dashed, col_ff0000, thin] (4.0,4.0,-4.0) -- (-0.0,4.0,-4.0); 
+\draw[dashed, col_ff0000, thin] (-0.0,4.0,-4.0) -- (-0.0,8.0,-4.0); 
+\draw[dashed, col_ff0000, thin] (-0.0,4.0,-4.0) -- (-0.0,4.0,-8.0); 
+\draw[dashed, col_ff0000, thin] (4.0,8.0,-4.0) -- (-0.0,8.0,-4.0); 
+\draw[dashed, col_ff0000, thin] (4.0,4.0,-8.0) -- (-0.0,4.0,-8.0); 
+\tikzdrawatom{col_666666}{0.0}{0.0}{0.0}{0.27999999999999997} 
+\tikzdrawatom{col_555555}{0.0}{4.0}{0.0}{0.27999999999999997} 
+\tikzdrawatom{col_333333}{0.0}{8.0}{0.0}{0.27999999999999997} 
+\tikzdrawatom{col_777777}{-0.0}{0.0}{-4.0}{0.27999999999999997} 
+\tikzdrawatom{col_666666}{-0.0}{4.0}{-4.0}{0.27999999999999997} 
+\tikzdrawatom{col_555555}{-0.0}{8.0}{-4.0}{0.27999999999999997} 
+\tikzdrawatom{col_333333}{-0.0}{0.0}{-8.0}{0.27999999999999997} 
+\tikzdrawatom{col_777777}{-0.0}{4.0}{-8.0}{0.27999999999999997} 
+\tikzdrawatom{col_666666}{-0.0}{8.0}{-8.0}{0.27999999999999997} 
+\draw[solid, col_000000, thick] (1.2,0.4,-2.8) -- (0.4,0.4,-1.2); 
+\draw[solid, col_000000, thick] (2.0,2.8,-2.0) -- (0.4,0.4,-1.2); 
+\draw[solid, col_000000, thick] (0.4,0.4,-1.2) -- (0.4,0.4,-1.2); 
+\draw[solid, col_000000, thick] (0.4,0.4,-1.2) -- (2.8,1.2,-0.4); 
+\tikzdrawatom{col_008888}{0.4}{0.4}{-1.2}{0.2831415022793093} 
+\draw[solid, col_000000, thick] (1.2,0.4,-2.8) -- (1.2,0.4,-2.8); 
+\draw[solid, col_000000, thick] (1.2,0.4,-2.8) -- (2.0,2.8,-2.0); 
+\draw[solid, col_000000, thick] (1.2,0.4,-2.8) -- (2.8,1.2,-0.4); 
+\tikzdrawatom{col_008800}{1.2}{0.4}{-2.8}{0.2895306419695662} 
+\draw[solid, col_000000, thick] (2.0,2.8,-2.0) -- (2.0,2.8,-2.0); 
+\draw[solid, col_000000, thick] (2.0,2.8,-2.0) -- (2.8,1.2,-0.4); 
+\tikzdrawatom{col_880000}{2.0}{2.8}{-2.0}{0.296063953763358} 
+\tikzdrawatom{col_000088}{2.8}{1.2}{-0.4}{0.3027446909305213} 
+\draw[solid, col_000000, very thick] (8.0,0.0,-0.0) -- (4.0,0.0,-0.0); 
+\draw[solid, col_000000, very thick] (8.0,8.0,-0.0) -- (4.0,8.0,-0.0); 
+\draw[solid, col_000000, very thick] (8.0,0.0,-8.0) -- (4.0,0.0,-8.0); 
+\draw[dashed, col_ff0000, thin] (4.0,0.0,-0.0) -- (4.0,4.0,-0.0); 
+\draw[dashed, col_ff0000, thin] (4.0,0.0,-0.0) -- (4.0,0.0,-4.0); 
+\draw[dashed, col_ff0000, thin] (8.0,4.0,-0.0) -- (4.0,4.0,-0.0); 
+\draw[dashed, col_ff0000, thin] (4.0,4.0,-0.0) -- (4.0,8.0,-0.0); 
+\draw[dashed, col_ff0000, thin] (4.0,4.0,-0.0) -- (4.0,4.0,-4.0); 
+\draw[dashed, col_ff0000, thin] (4.0,8.0,-0.0) -- (4.0,8.0,-4.0); 
+\draw[dashed, col_ff0000, thin] (8.0,0.0,-4.0) -- (4.0,0.0,-4.0); 
+\draw[dashed, col_ff0000, thin] (4.0,0.0,-4.0) -- (4.0,4.0,-4.0); 
+\draw[dashed, col_ff0000, thin] (4.0,0.0,-4.0) -- (4.0,0.0,-8.0); 
+\draw[dashed, col_ff0000, thin] (8.0,4.0,-4.0) -- (4.0,4.0,-4.0); 
+\draw[dashed, col_ff0000, thin] (4.0,4.0,-4.0) -- (4.0,8.0,-4.0); 
+\draw[dashed, col_ff0000, thin] (4.0,4.0,-4.0) -- (4.0,4.0,-8.0); 
+\draw[dashed, col_ff0000, thin] (8.0,8.0,-4.0) -- (4.0,8.0,-4.0); 
+\draw[dashed, col_ff0000, thin] (4.0,8.0,-4.0) -- (4.0,8.0,-8.0); 
+\draw[dashed, col_ff0000, thin] (4.0,0.0,-8.0) -- (4.0,4.0,-8.0); 
+\draw[dashed, col_ff0000, thin] (8.0,4.0,-8.0) -- (4.0,4.0,-8.0); 
+\draw[dashed, col_ff0000, thin] (4.0,4.0,-8.0) -- (4.0,8.0,-8.0); 
+\tikzdrawatom{col_555555}{4.0}{0.0}{-0.0}{0.3130495168499705} 
+\tikzdrawatom{col_333333}{4.0}{4.0}{-0.0}{0.3130495168499705} 
+\tikzdrawatom{col_777777}{4.0}{8.0}{-0.0}{0.3130495168499705} 
+\tikzdrawatom{col_666666}{4.0}{0.0}{-4.0}{0.3130495168499705} 
+\tikzdrawatom{col_555555}{4.0}{4.0}{-4.0}{0.3130495168499705} 
+\tikzdrawatom{col_333333}{4.0}{8.0}{-4.0}{0.3130495168499705} 
+\tikzdrawatom{col_777777}{4.0}{0.0}{-8.0}{0.3130495168499705} 
+\tikzdrawatom{col_666666}{4.0}{4.0}{-8.0}{0.3130495168499705} 
+\tikzdrawatom{col_555555}{4.0}{8.0}{-8.0}{0.3130495168499705} 
+\tikzdrawatom{col_880000}{7.2}{7.2}{-7.2}{0.34227646899002495} 
+\draw[solid, col_000000, very thick] (8.0,0.0,-0.0) -- (8.0,4.0,-0.0); 
+\draw[solid, col_000000, very thick] (8.0,0.0,-0.0) -- (8.0,0.0,-4.0); 
+\draw[solid, col_000000, very thick] (8.0,4.0,-0.0) -- (8.0,8.0,-0.0); 
+\draw[solid, col_000000, very thick] (8.0,8.0,-0.0) -- (8.0,8.0,-4.0); 
+\draw[solid, col_000000, very thick] (8.0,0.0,-4.0) -- (8.0,0.0,-8.0); 
+\draw[solid, col_000000, very thick] (8.0,0.0,-8.0) -- (8.0,4.0,-8.0); 
+\draw[dashed, col_ff0000, thin] (8.0,4.0,-0.0) -- (8.0,4.0,-4.0); 
+\draw[dashed, col_ff0000, thin] (8.0,0.0,-4.0) -- (8.0,4.0,-4.0); 
+\draw[dashed, col_ff0000, thin] (8.0,4.0,-4.0) -- (8.0,8.0,-4.0); 
+\draw[dashed, col_ff0000, thin] (8.0,4.0,-4.0) -- (8.0,4.0,-8.0); 
+\tikzdrawatom{col_333333}{8.0}{0.0}{-0.0}{0.35} 
+\tikzdrawatom{col_777777}{8.0}{4.0}{-0.0}{0.35} 
+\tikzdrawatom{col_666666}{8.0}{8.0}{-0.0}{0.35} 
+\tikzdrawatom{col_555555}{8.0}{0.0}{-4.0}{0.35} 
+\tikzdrawatom{col_333333}{8.0}{4.0}{-4.0}{0.35} 
+\tikzdrawatom{col_777777}{8.0}{8.0}{-4.0}{0.35} 
+\tikzdrawatom{col_666666}{8.0}{0.0}{-8.0}{0.35} 
+\tikzdrawatom{col_555555}{8.0}{4.0}{-8.0}{0.35} 
+}
+
+\begin{document}
+\begin{tikzpicture}
+\printtikzcrystal{}
+\end{tikzpicture} 
+\end{document}
