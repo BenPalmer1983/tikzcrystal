@@ -9,18 +9,40 @@ from file_type import file_type
 
 class line:
 
-  def read_details(details):
+  def read_details(details, coord_a=None, coord_b=None):
     ds = []
     for d in details:
       ds.append(d.strip().lower())
       
     line = {
+            'xa': 0.0,
+            'ya': 0.0,
+            'za': 0.0,
+            'xb': 0.0,
+            'yb': 0.0,
+            'zb': 0.0,
             'on': False,
             'colour': '#FFFFFF',
             'weight': 'thin',
             'type': 'solid',
             'f': 0.5,
            }
+           
+    if(coord_a is not None):
+      try:
+        line['xa'] = float(coord_a[0])
+        line['ya'] = float(coord_a[1])
+        line['za'] = float(coord_a[2])
+      except:
+        pass
+           
+    if(coord_b is not None):
+      try:
+        line['xb'] = float(coord_b[0])
+        line['yb'] = float(coord_b[1])
+        line['zb'] = float(coord_b[2])
+      except:
+        pass
       
     if(not ('none' in ds or 'false' in ds)):
       line['on'] = True

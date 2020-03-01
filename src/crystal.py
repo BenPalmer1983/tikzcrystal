@@ -38,6 +38,8 @@ class crystal:
             'i': [],
             'iline': [],
             'ilines': [],
+            'l': [],
+            'lines': [],
             'vacancy': [],
             'interstitial': [],
             'interstitial_xyz': [],
@@ -197,6 +199,19 @@ class crystal:
             crys['ilines'].append(iline)    
           except:
             pass    
+            
+    # Interstitial Lines
+    if(len(crys['l']) >= 2):  
+      if(crys['l'][0] == 'l'):
+        for iline_t in crys['l'][1:]:
+          if(len(iline_t) >= 2 and iline_t[0] != 'l'):
+            crys['lines'].append(line.read_details(iline_t, [iline_t[0],iline_t[1],iline_t[2]], [iline_t[3],iline_t[4],iline_t[5]]))            
+      else:
+        iline_t = crys['l']
+        if(len(iline_t) >= 2):
+          crys['lines'].append(line.read_details(iline_t, [iline_t[0],iline_t[1],iline_t[2]], [iline_t[3],iline_t[4],iline_t[5]])) 
+    
+            
 
     # Make Crystal
     if(ctype == "sc"):
@@ -276,6 +291,11 @@ class crystal:
     # Interstitial lines
     join_lines = crystal.make_interstitial_lines(crys, cx, cy, cz, a, b, c)
     cmd_lines = cmd_lines + join_lines
+    
+    # Stated lines
+    join_lines = crystal.make_stated_lines(crys, cx, cy, cz, a, b, c)
+    cmd_lines = cmd_lines + join_lines
+    
     
       
     return cmd_lines
@@ -476,11 +496,19 @@ class crystal:
                 pass
               else:
                 lines.append([xa,ya,za,xb,yb,zb])
-                cmd_lines = crystal.add_lines_i(cmd_lines, [xa,ya,za], [xb,yb,zb], type, weight, colour)
-     
-
+                cmd_lines = crystal.add_lines_i(cmd_lines, [xa,ya,za], [xb,yb,zb], type, weight, colour)  
     return cmd_lines
     
+    
+  def make_stated_lines(crys, cx, cy, cz, a, b, c):
+    cmd_lines = []
+    lines = []
+    for l in crys['lines']:
+      cmd_lines = crystal.add_lines_i(cmd_lines, [l['xa'],l['ya'],l['za']], [l['xb'],l['yb'],l['zb']], l['type'], l['weight'], l['colour'])
+      #print(l)
+
+    return cmd_lines
+ 
  
     
     
@@ -551,6 +579,7 @@ class crystal:
     yb = str(b[1])
     zb = str(b[2])
     join_line = 'line xa=' + str(xa) + ' xb=' + str(xb) + ' ya=' + str(ya) + ' yb=' + str(yb) + ' za=' + str(za) + ' zb=' + str(zb) + ' colour='+colour+' type=' + type + ' line_weight="' + weight + '"'
+    #print(join_line)
     cmd_lines.append(join_line)    
     return cmd_lines  
     
